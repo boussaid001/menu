@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class WidgetCategorieHome extends StatelessWidget {
+  
   final String imagePath;
   final String categoryName;
 
