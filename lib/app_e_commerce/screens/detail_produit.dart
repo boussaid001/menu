@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import './../model/class_produit.dart';
 import './../provider/cart_provider.dart';
+import '../provider/favorites_provider.dart';
+import '../model/class_produit_fav.dart';
 
 
 class ProduitDetailScreen extends StatefulWidget {
@@ -21,6 +23,32 @@ class _ProduitDetailScreenState extends State<ProduitDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(p.id.toString()),
+        actions: [
+          Consumer<FavoritesProvider>(
+            builder: (context, favoritesProvider, child) {
+              final isFavorite = favoritesProvider.isFavorite(p.id);
+              return IconButton(
+                icon: Icon(
+                  isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: isFavorite ? Colors.red : Colors.white,
+                ),
+                onPressed: () {
+                  if (!isFavorite) {
+                    favoritesProvider.addToFavorites(
+                      ProduitFavori(
+                        id: p.id,
+                        title: p.title,
+                        description: p.description,
+                        price: p.price,
+                        imageUrl: p.imageUrl,
+                      ),
+                    );
+                  }
+                },
+              );
+            },
+          ),
+        ],
       ),
       body: Stack(
         children: [
@@ -131,17 +159,36 @@ class _ProduitDetailScreenState extends State<ProduitDetailScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          print("ee");
+                      child: Consumer<FavoritesProvider>(
+                        builder: (context, favoritesProvider, child) {
+                          final isFavorite = favoritesProvider.isFavorite(p.id);
+                          return ElevatedButton(
+                            onPressed: () {
+                              if (!isFavorite) {
+                                favoritesProvider.addToFavorites(
+                                  ProduitFavori(
+                                    id: p.id,
+                                    title: p.title,
+                                    description: p.description,
+                                    price: p.price,
+                                    imageUrl: p.imageUrl,
+                                  ),
+                                );
+                                showSnackBarMessage(context, "Produit ajouté aux favoris");
+                              } else {
+                                favoritesProvider.removeFromFavorites(p.id);
+                                showSnackBarMessage(context, "Produit retiré des favoris");
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: isFavorite ? Colors.red : Colors.white,
+                              foregroundColor: isFavorite ? Colors.white : Colors.black,
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.zero),
+                            ),
+                            child: Icon(Icons.favorite),
+                          );
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.black,
-                          shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero),
-                        ),
-                        child: Icon(Icons.favorite),
                       ),
                     ),
                   ],

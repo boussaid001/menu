@@ -3,6 +3,7 @@ import './home_page.dart';
 import './list_produits.dart';
 import './panier.dart';
 import './user_info.dart';
+import './screen_produit_favoris.dart';
 
 class BarreNavigationScreen extends StatefulWidget {
   const BarreNavigationScreen({super.key});
@@ -16,6 +17,7 @@ class _BarreNavigationScreenState extends State<BarreNavigationScreen> {
   List<Widget> myScreens = [
     HomeScreen(),
     ListProduitsScreen(),
+    ScreenProduitFavoris(),
     PanierScreen(),
     UserInfoScreen()
   ];
@@ -45,6 +47,10 @@ class _BarreNavigationScreenState extends State<BarreNavigationScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.list),
               label: "Liste Produit",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite),
+              label: "Favoris",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.shopping_bag),

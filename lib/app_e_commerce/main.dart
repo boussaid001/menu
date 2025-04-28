@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import './provider/cart_provider.dart';
+import './provider/favorites_provider.dart';
 import './screens/barre_navigation.dart';
 import './screens/detail_produit.dart';
 import './screens/home_page.dart';
@@ -13,6 +14,7 @@ import './screens/user_info.dart';
 void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => PanierProvider()),
+    ChangeNotifierProvider(create: (context) => FavoritesProvider()),
   ], child: MyApp()));
 }
 
@@ -26,8 +28,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    
     Provider.of<PanierProvider>(context, listen: false).loadCart();
+    Provider.of<FavoritesProvider>(context, listen: false).loadFavorites();
     super.initState();
   }
 
